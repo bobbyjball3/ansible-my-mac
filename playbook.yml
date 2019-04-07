@@ -1,0 +1,141 @@
+---
+
+- name: Setup MacBook from fresh OS install
+  hosts: localhost
+  tasks:
+
+        - name: Check if natural scrolling is disabled
+          shell: defaults read -g com.apple.swipescrolldirection
+          register: natural_scrolling_check
+          ignore_errors: yes
+          changed_when: false
+
+        - name: Disable natural scrolling
+          shell: defaults write -g com.apple.swipescrolldirection -bool false
+          when: natural_scrolling_check.stdout != "0"
+
+        - name: Check if tap-to-click is enabled on built-in trackpad
+          shell: defaults read com.apple.AppleMultitouchTrackpad Clicking
+          register: tap_to_click_check
+          ignore_errors: yes
+          changed_when: false
+
+        - name: Enable tap-to-click on built-in trackpad
+          shell: defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
+          when: tap_to_click_check.stdout != "1"
+
+        - name: Check if tap-to-click is enabled on bluetooth trackpads
+          shell: defaults read com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking
+          register: bt_tap_to_click_check
+          ignore_errors: yes
+          changed_when: false
+
+        - name: Enable tap-to-click on any bluetooth trackpad
+          become: yes
+          shell: defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+          when: bt_tap_to_click_check.stdout != "1"
+
+        - name: Check if mouse tap behavior is enabled
+          become: yes
+          shell: defaults -currentHost read -g com.apple.mouse.tapBehavior
+          register: tap_behavior_check
+          ignore_errors: yes
+          changed_when: false
+
+        - name: Set trackpad tap behavior
+          become: yes
+          shell: defaults -currentHost write -g com.apple.mouse.tapBehavior -int 1
+          when: tap_behavior_check.stdout != "1"
+
+        - name: Check if Homebrew is installed
+          shell: command -v brew >/dev/null 2>&1
+          register: homebrew_check
+          ignore_errors: yes
+          changed_when: false
+
+        - name: Install Homebrew
+          shell: /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+          when: homebrew_check.rc == 1
+
+        - name: Get list of Brew taps
+          shell: brew tap
+          register: tap_output
+          changed_when: false
+
+        - name: Tap configured brew casks
+          shell: brew tap {{ item }}
+          register: tap_result
+          when: item not in tap_output.stdout.split()
+          with_items: "{{ brew_caskrooms }}"
+
+        - name: Get list of installed  formulas
+          shell: brew list -1
+          register: formula_list_result
+          changed_when: false
+
+        - name: Install configured formulaes
+          shell: brew install {{ item }}
+          register: formula_result
+          when: item not in formula_list_result.stdout.split()
+          with_items: "{{ brew_formulae }}"
+
+        - name: Get list of installed casks
+          shell: brew cask list -1
+          register: cask_list_result
+          changed_when: false
+
+        - name: Install configured casks
+          shell: brew cask install {{ item }}
+          register: cask_result
+          when: item not in cask_list_result.stdout.split()
+          with_items: "{{ brew_casks }}"
+
+        - name: Check if Oh My ZSH is installed
+          stat:
+                  path: /Users/{{ ansible_user_id }}/.oh-my-zsh
+          register: omzsh_result
+          changed_when: false
+
+        - name: Install Oh My ZSH
+          shell: /usr/bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+          when: not omzsh_result.stat.isdir
+
+        - name: Check default shell
+          shell: dscl . -read /Users/{{ ansible_user_id }} UserShell
+          register: shell_check
+          changed_when: false
+        
+        - name: Set default shell to ZSH
+          become: yes
+          shell: chsh -s {{ default_shell }} {{ ansible_user_id }}
+          register: chsh_result
+          when: shell_check.stdout.find(default_shell) == -1
+
+        - name: Check if PowerLevel9k is installed
+          stat:
+                  path: /Users/{{ ansible_user_id }}/powerlevel9k/.git
+          register: p9k_check
+          changed_when: false
+
+        - name: Install PowerLevel9k
+          git:
+                repo: https://github.com/bhilburn/powerlevel9k.git
+                clone: yes
+                dest: /Users/{{ ansible_user_id }}/powerlevel9k
+                update: no
+          when: not p9k_check.stat.isdir
+
+        - name: Deploy ZSH customizations
+          template:
+                src: templates/zsh_customizations.j2
+                dest: "{{ zsh_customization_dest }}"
+
+        - name: Check if zsh customizations are set
+          shell: grep "source {{ zsh_customization_dest }}" /Users/{{ ansible_user_id }}/.zshrc
+          register: zsh_cust_check
+          failed_when: zsh_cust_check.rc > 1
+          changed_when: false
+
+        - name: Include ZSH customizations
+          shell: echo "source {{ zsh_customization_dest }}" >> /Users/{{ ansible_user_id }}/.zshrc
+          when: zsh_cust_check.rc == 1

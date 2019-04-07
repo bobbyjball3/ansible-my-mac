@@ -1,0 +1,23 @@
+brew_casks:
+- spectacle
+- google-chrome
+- 1password
+- iterm2
+- visual-studio-code
+- font-hack-nerd-font
+- miniconda
+
+brew_formulae:
+- coreutils
+- zsh
+- zsh-syntax-highlighting
+- neovim
+- rust
+- nvm
+
+brew_caskrooms:
+- caskroom/fonts
+
+default_shell: /bin/zsh
+
+zsh_customization_dest: /Users/{{ ansible_user_id }}/.zsh_customizations
