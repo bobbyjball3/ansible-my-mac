@@ -4,8 +4,8 @@
 - Installs [Brew](https://docs.brew.sh/)
 - Installs [Oh My ZSH](https://github.com/robbyrussell/oh-my-zsh)
 - Installs [PowerLevel9K](https://github.com/bhilburn/powerlevel9k)
-- Installs a set of [useful formulae](hostvars/localhost#L10-L16)
-- Installs a set of [useful casks](hostvars/localhost#L1-L8)
+- Installs a set of [useful formulae](host_vars/localhost#L10-L16)
+- Installs a set of [useful casks](host_vars/localhost#L1-L8)
 - Disables natural scrolling
 - Enable tap to click (left and right click)
 
