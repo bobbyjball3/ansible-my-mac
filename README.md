@@ -1,4 +1,4 @@
-# Ansible Playbook for Post-wip MacOS Setup
+# Ansible Playbook for Post-wipe MacOS Setup
 
 ## What it does
 - Installs [Brew](https://docs.brew.sh/)
@@ -10,7 +10,7 @@
 - Enable tap to click (left and right click)
 
 ## How to use it
-_note_: Requres you have sudo as root to set some settings
+_note_: Requires you have sudo as root to set some settings
 1. Once you've satisfied all of the requirements listed in the Requirements section, execute the following
 
 ```Shell
