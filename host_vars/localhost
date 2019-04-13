@@ -1,6 +1,7 @@
 brew_casks:
 - spectacle
 - google-chrome
+- p4v
 - 1password
 - iterm2
 - visual-studio-code
@@ -21,3 +22,8 @@ brew_caskrooms:
 default_shell: /bin/zsh
 
 zsh_customization_dest: /Users/{{ ansible_user_id }}/.zsh_customizations
+
+git_name: Bobby Ball
+git_email: bobbyjball3@gmail.com
+git_editor: nvim
+git_merge_tool: p4mergetool

@@ -139,3 +139,22 @@
         - name: Include ZSH customizations
           shell: echo "source {{ zsh_customization_dest }}" >> /Users/{{ ansible_user_id }}/.zshrc
           when: zsh_cust_check.rc == 1
+
+        - name: Configure git user name
+          git_config:
+            name: user.name
+            scope: global
+            value: "{{ git_name }}"
+
+        - name: Configure git email
+          git_config:
+            name: user.email
+            scope: global
+            value: "{{ git_email }}"
+
+        - name: Configure git editor
+          git_config:
+            name: core.editor
+            scope: global
+            value: "{{ git_editor }}"
+
