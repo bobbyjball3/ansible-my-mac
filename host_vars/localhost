@@ -1,6 +1,7 @@
 brew_casks:
 - spectacle
 - google-chrome
+- firefox
 - p4v
 - 1password
 - iterm2
