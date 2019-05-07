@@ -16,6 +16,7 @@ brew_formulae:
 - neovim
 - rust
 - nvm
+- gdb
 
 brew_caskrooms:
 - caskroom/fonts
