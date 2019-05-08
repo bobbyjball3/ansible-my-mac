@@ -8,6 +8,7 @@ brew_casks:
 - visual-studio-code
 - font-hack-nerd-font
 - miniconda
+- virtualbox
 
 brew_formulae:
 - coreutils
@@ -16,7 +17,6 @@ brew_formulae:
 - neovim
 - rust
 - nvm
-- gdb
 
 brew_caskrooms:
 - caskroom/fonts
