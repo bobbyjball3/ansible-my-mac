@@ -9,6 +9,7 @@ brew_casks:
 - font-hack-nerd-font
 - miniconda
 - virtualbox
+- intellij-idea-ce
 
 brew_formulae:
 - coreutils
