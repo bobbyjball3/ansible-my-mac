@@ -35,6 +35,18 @@
           shell: defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
           when: bt_tap_to_click_check.stdout != "1"
 
+        - name: Check if 24-hour time format is set
+          become: yes
+          shell: defaults read com.apple.menuextra.clock DateFormat
+          register: clock_format_check
+          ignore_errors: yes
+          changed_when: false
+
+        - name: Set clock format to 24-hour
+          become: yes
+          shell: defaults write com.apple.menuextra.clock DateFormat -string 'EEE MMM d  H:mm:ss'
+          when: clock_format_check.stdout != "EEE MMM d  H:mm:ss"
+
         - name: Check if mouse tap behavior is enabled
           become: yes
           shell: defaults -currentHost read -g com.apple.mouse.tapBehavior
