@@ -1,6 +1,6 @@
 brew_casks:
 - spectacle
-- google-chrome
+- brave-browser
 - firefox
 - p4v
 - 1password
@@ -13,6 +13,7 @@ brew_casks:
 
 brew_formulae:
 - coreutils
+- gpg
 - zsh
 - zsh-syntax-highlighting
 - neovim
