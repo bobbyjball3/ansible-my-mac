@@ -140,6 +140,37 @@
                 update: no
           when: not p9k_check.stat.isdir
 
+        - name: Check If NeoVim Configs Are Installed
+          stat:
+                  path: /Users/{{ ansible_user_id }}/.config/nvim
+          register: nvim_config_check
+          changed_when: false
+
+        - name: Install NeoVim Configs
+          git:
+                repo: https://github.com/afshinm/neovim-config.git
+                clone: yes
+                dest: /Users/{{ ansible_user_id }}/.config/nvim
+                update: no
+          when: not nvim_config_check.stat.isdir
+
+        - name: Check if NeoVim Plugin Manager is installed
+          stat:
+                  path: /Users/{{ ansible_user_id }}/.local/share/nvim/site/autoload/plug.vim
+          register: nvim_plugin_check
+          changed_when: false
+
+        - name: Install NeoVim Plugin Manager
+          shell: curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+          register: zsh_cust_check
+          failed_when: zsh_cust_check.rc > 1
+          changed_when: not nvim_plugin_check.stat.exists
+
+        - name: Install NeoVim YouCompleteMe
+          shell: /Users/{{ ansible_user_id }}/.config/nvim/plugged/YouCompleteMe/install.py --racer-completer --tern-completer
+          register: ycm_cust_check
+          failed_when: ycm_cust_check.rc > 1
+
         - name: Deploy ZSH customizations
           template:
                 src: templates/zsh_customizations.j2

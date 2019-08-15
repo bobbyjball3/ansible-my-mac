@@ -10,6 +10,8 @@ brew_casks:
 - miniconda
 - virtualbox
 - intellij-idea-ce
+- java
+- balenaetcher
 
 brew_formulae:
 - coreutils
@@ -19,9 +21,12 @@ brew_formulae:
 - neovim
 - rust
 - nvm
+- npm
+- cmake
 
 brew_caskrooms:
 - caskroom/fonts
+- neovim/neovim
 
 default_shell: /bin/zsh
 
