@@ -113,7 +113,7 @@
 
         - name: Install Oh My ZSH
           shell: /usr/bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-          when: not omzsh_result.stat.isdir
+          when: omzsh_result.stat.isdir is not defined or not omzsh_result.stat.isdir
 
         - name: Check default shell
           shell: dscl . -read /Users/{{ ansible_user_id }} UserShell
@@ -138,7 +138,7 @@
                 clone: yes
                 dest: /Users/{{ ansible_user_id }}/powerlevel9k
                 update: no
-          when: not p9k_check.stat.isdir
+          when: p9k_check.stat.isdir is not defined or not p9k_check.stat.isdir
 
         - name: Check If NeoVim Configs Are Installed
           stat:
@@ -152,7 +152,7 @@
                 clone: yes
                 dest: /Users/{{ ansible_user_id }}/.config/nvim
                 update: no
-          when: not nvim_config_check.stat.isdir
+          when: nvim_config_check.stat.isdir is not defined or not nvim_config_check.stat.isdir
 
         - name: Check if NeoVim Plugin Manager is installed
           stat:

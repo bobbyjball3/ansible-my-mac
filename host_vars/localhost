@@ -1,17 +1,16 @@
 brew_casks:
 - spectacle
-- brave-browser
 - firefox
+- docker
 - p4v
-- 1password
 - iterm2
 - visual-studio-code
 - font-hack-nerd-font
 - miniconda
-- virtualbox
 - intellij-idea-ce
-- java
 - balenaetcher
+- google-chrome
+- homebrew/cask-drivers/elgato-game-capture-hd
 
 brew_formulae:
 - coreutils
@@ -19,13 +18,15 @@ brew_formulae:
 - zsh
 - zsh-syntax-highlighting
 - neovim
+- nmap
 - rust
 - nvm
 - npm
 - cmake
+- java
 
 brew_caskrooms:
-- caskroom/fonts
+- homebrew/cask-fonts
 - neovim/neovim
 
 default_shell: /bin/zsh
