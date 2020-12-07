@@ -128,35 +128,35 @@
 
         - name: Check if PowerLevel9k is installed
           stat:
-                  path: /Users/{{ ansible_user_id }}/powerlevel9k/.git
+            path: /Users/{{ ansible_user_id }}/powerlevel9k/.git
           register: p9k_check
           changed_when: false
 
         - name: Install PowerLevel9k
           git:
-                repo: https://github.com/bhilburn/powerlevel9k.git
-                clone: yes
-                dest: /Users/{{ ansible_user_id }}/powerlevel9k
-                update: no
+            repo: https://github.com/bhilburn/powerlevel9k.git
+            clone: yes
+            dest: /Users/{{ ansible_user_id }}/powerlevel9k
+            update: no
           when: p9k_check.stat.isdir is not defined or not p9k_check.stat.isdir
 
         - name: Check If NeoVim Configs Are Installed
           stat:
-                  path: /Users/{{ ansible_user_id }}/.config/nvim
+            path: /Users/{{ ansible_user_id }}/.config/nvim
           register: nvim_config_check
           changed_when: false
 
         - name: Install NeoVim Configs
           git:
-                repo: https://github.com/afshinm/neovim-config.git
-                clone: yes
-                dest: /Users/{{ ansible_user_id }}/.config/nvim
-                update: no
+            repo: https://github.com/afshinm/neovim-config.git
+            clone: yes
+            dest: /Users/{{ ansible_user_id }}/.config/nvim
+            update: no
           when: nvim_config_check.stat.isdir is not defined or not nvim_config_check.stat.isdir
 
         - name: Check if NeoVim Plugin Manager is installed
           stat:
-                  path: /Users/{{ ansible_user_id }}/.local/share/nvim/site/autoload/plug.vim
+            path: /Users/{{ ansible_user_id }}/.local/share/nvim/site/autoload/plug.vim
           register: nvim_plugin_check
           changed_when: false
 
@@ -173,8 +173,8 @@
 
         - name: Deploy ZSH customizations
           template:
-                src: templates/zsh_customizations.j2
-                dest: "{{ zsh_customization_dest }}"
+            src: templates/zsh_customizations.j2
+            dest: "{{ zsh_customization_dest }}"
 
         - name: Check if zsh customizations are set
           shell: grep "source {{ zsh_customization_dest }}" /Users/{{ ansible_user_id }}/.zshrc
@@ -203,4 +203,10 @@
             name: core.editor
             scope: global
             value: "{{ git_editor }}"
+
+        - name: Configure git diff pager
+          git_config:
+            name: core.pager
+            scope: global
+            value: "diff-so-fancy | less --tabs=4 -RFX"
 

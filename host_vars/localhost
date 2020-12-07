@@ -2,7 +2,6 @@ brew_casks:
 - spectacle
 - firefox
 - docker
-- p4v
 - iterm2
 - visual-studio-code
 - font-hack-nerd-font
@@ -11,6 +10,8 @@ brew_casks:
 - balenaetcher
 - google-chrome
 - homebrew/cask-drivers/elgato-game-capture-hd
+- zoom
+- slack
 
 brew_formulae:
 - coreutils
@@ -24,6 +25,7 @@ brew_formulae:
 - npm
 - cmake
 - java
+- diff-so-fancy
 
 brew_caskrooms:
 - homebrew/cask-fonts
@@ -36,4 +38,4 @@ zsh_customization_dest: /Users/{{ ansible_user_id }}/.zsh_customizations
 git_name: Bobby Ball
 git_email: bobbyjball3@gmail.com
 git_editor: nvim
-git_merge_tool: p4mergetool
+
